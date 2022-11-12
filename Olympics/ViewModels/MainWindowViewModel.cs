@@ -21,7 +21,7 @@ namespace Olympics.ViewModels
             }
         }
 
-        private int _currentPage;
+        private int _currentPage = 1;
         public int CurrentPage
         {
             get { return _currentPage; }
@@ -96,74 +96,122 @@ namespace Olympics.ViewModels
             }
         }
 
+        private int _dimensionPage;
+        public int DimensionPage
+        {
+            get { return _dimensionPage; }
+            set { _dimensionPage = value;
+                NotifyPropertyChanged("DimensionPage");
+                this.CurrentPage = 1;
+                LoadDataPartecipations();
+
+            }
+        }
+
+        private int[] _dimensionsPage;
+        public int[] DimensionsPage
+        {
+            get { return _dimensionsPage; }
+            set { _dimensionsPage = value;
+                NotifyPropertyChanged("DimensionsPage");
+            }
+        }
 
 
-
-        private string _filtroGame;
+        private string _filtroGame = null;
         public string FiltroGame
         {
             get { return _filtroGame; }
             set { _filtroGame = value;
                 NotifyPropertyChanged("FiltroGame");
+                this.CurrentPage = 1;
                 LoadFiltroSports();
                 LoadDataPartecipations();
             }
         }
 
-        private string _filtroSport;
+        private string _filtroSport = null;
         public string FiltroSport
         {
             get { return _filtroSport; }
             set { _filtroSport = value;
                 NotifyPropertyChanged("FiltroSport");
+                this.CurrentPage = 1;
                 LoadFiltroEvents();
                 LoadDataPartecipations();
             }
 
         }
 
-        private string _filtroEvent;
+        private string _filtroEvent = null;
         public string FiltroEvent
         {
             get { return _filtroEvent; }
             set { _filtroEvent = value;
                 NotifyPropertyChanged("FiltroEvent");
+                this.CurrentPage = 1;
                 LoadDataPartecipations();
             }
         }
 
-        private string _filtroMedal;
+        private string _filtroMedal = null;
         public string FiltroMedal
         {
             get { return _filtroMedal; }
             set { _filtroMedal = value;
                 NotifyPropertyChanged("FiltroMedal");
+                this.CurrentPage = 1;
                 LoadDataPartecipations();
             }
         }
 
-        private string _filtroName;
+        private string _filtroName = null;
         public string FiltroName
         {
             get { return _filtroName; }
             set { _filtroName = value;
                 NotifyPropertyChanged("FiltroName");
+                this.CurrentPage = 1;
                 LoadDataPartecipations();
             }
         }
 
-        private string _filtroSex;
+        private string _filtroSex = null;
         public string FiltroSex
         {
             get { return _filtroSex; }
             set { _filtroSex = value;
                 NotifyPropertyChanged("FiltroSex");
+                this.CurrentPage = 1;
                 LoadDataPartecipations();
+            }
+        }
+
+        private bool _canGoAhead = true;
+
+        public bool CanGoAhead
+        {
+            get { return _canGoAhead; }
+            set { _canGoAhead = value;
+                NotifyPropertyChanged("CanGoAhead"); 
+            }
+        }
+
+        private bool _canGoBack = true;
+
+        public bool CanGoBack
+        {
+            get { return _canGoBack; }
+            set { _canGoBack = value;
+                NotifyPropertyChanged("CanGoBack");
             }
         }
 
 
 
+
+        //attributo per tenere traccia del count(command2) passato come ref al get all
+        int paginetotali;
 
 
 
@@ -181,7 +229,12 @@ namespace Olympics.ViewModels
             this.Genders = Partecipations.getGenders();
             this.Games = Partecipations.getGames();
             this.Medals = Partecipations.getMedals();
-            this.DatiPartecipation = Partecipations.getAll("", "", "", "", "", "");
+
+            DimensionsPageLoad();
+
+            this.DatiPartecipation = Partecipations.getAll(null, null, null, null, null, null, CurrentPage, DimensionPage,ref paginetotali);
+
+            
             
         }
 
@@ -205,12 +258,47 @@ namespace Olympics.ViewModels
 
         public void LoadDataPartecipations()
         {
-            this.DatiPartecipation = Partecipations.getAll(FiltroName, FiltroSex, FiltroGame, FiltroSport, FiltroEvent, FiltroMedal);
+            
+            this.DatiPartecipation = Partecipations.getAll(FiltroName, FiltroSex, FiltroGame, FiltroSport, FiltroEvent, FiltroMedal, CurrentPage, DimensionPage,ref paginetotali);
+            this.TotalPage = paginetotali / DimensionPage;
         }
 
         public void SetPagination()
         {
             this.Pagination = $"pagina {this.CurrentPage} di {this.TotalPage}";
+        }
+
+        public void DimensionsPageLoad()
+        {
+            this.DimensionsPage = new int[]
+            {
+                10, 20, 30, 40, 50
+            };
+            this.DimensionPage = this.DimensionsPage[0];
+        }
+
+        internal void nextPage()
+        {
+            CurrentPage++;
+            LoadDataPartecipations();
+        }
+
+        internal void previousPage()
+        {
+            CurrentPage--;
+            LoadDataPartecipations();
+        }
+
+        internal void LastPage()
+        {
+            CurrentPage = TotalPage;
+            LoadDataPartecipations();
+        }
+
+        internal void FirstPage()
+        {
+            CurrentPage = 1;
+            LoadDataPartecipations();
         }
 
 

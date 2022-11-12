@@ -186,7 +186,7 @@ namespace Olympics.Controllers
             }
         }
 
-        public static List<Partecipation> getAll(string name, string sex, string game, string sport, string evento, string medal)
+        public static List<Partecipation> getAll(string name, string sex, string game, string sport, string evento, string medal, int currentPage, int dimensionPage, ref int totalPage)
         {
             List<Partecipation> a = new List<Partecipation>();
 
@@ -198,21 +198,75 @@ namespace Olympics.Controllers
 
                     SqlCommand command = new SqlCommand();
                     command.Connection = connection;
-                    command.CommandText = "select * from athletes where Name like @Name and Sex like @Sex and Games like @Games and Sport like @Sport and Event like @Event and Medal like @Medal";
-                    /*command.CommandText = "SELECT * FROM athletes";
-                    command.CommandText += "WHERE Name LIKE @Name AND ";
-                    command.CommandText += "Sex LIKE @Sex AND ";
-                    command.CommandText += "Games LIKE @Games AND ";
-                    command.CommandText += "Sport LIKE @Sport AND ";
-                    command.CommandText += "Event LIKE @Event AND ";
-                    command.CommandText += "Medal LIKE @Medal";*/
+                    command.CommandText = "SELECT * FROM athletes";
 
-                    command.Parameters.AddWithValue("@Name", $"%{name}%");
-                    command.Parameters.AddWithValue("@Sex", $"%{sex}%");
-                    command.Parameters.AddWithValue("@Games", $"%{game}%");
-                    command.Parameters.AddWithValue("@Sport", $"%{sport}%");
-                    command.Parameters.AddWithValue("@Event", $"%{evento}%");
-                    command.Parameters.AddWithValue("@Medal", $"%{medal}%");
+
+                    if (name != null || sex != null || game != null || sport != null || evento != null || medal != null)
+                    {
+                        command.CommandText += " WHERE";
+
+                        if (name != null)
+                        {
+                            command.CommandText += " Name LIKE @Name AND";
+                            command.Parameters.AddWithValue("@Name", $"%{name}%");
+                        }
+                        if (sex != null)
+                        {
+                            command.CommandText += " Sex LIKE @Sex AND";
+                            command.Parameters.AddWithValue("@Sex", $"%{sex}%");
+                        }
+                        if (game != null)
+                        {
+                            command.CommandText += " Games LIKE @Game AND";
+                            command.Parameters.AddWithValue("@Game", $"%{game}%");
+                        }
+                        if (evento != null)
+                        {
+                            command.CommandText += " Event LIKE @Event AND";
+                            command.Parameters.AddWithValue("@Event", $"%{evento}%");
+                        }
+                        if (sport != null)
+                        {
+                            command.CommandText += " Sport LIKE @Sport AND";
+                            command.Parameters.AddWithValue("@Sport", $"%{sport}%");
+                        }
+                        if (medal != null)
+                        {
+                            command.CommandText += " Medal LIKE @Medal AND";
+                            command.Parameters.AddWithValue("@Medal", $"%{medal}%");
+                        }
+
+                        command.CommandText = command.CommandText.Substring(0, command.CommandText.Length - 3);
+
+                    }
+
+
+                    //command 2 serve semplicemente per tenere traccia del nuemero di pagine totali
+                    SqlCommand command2 = new SqlCommand();
+                    command2.Connection = connection;
+                    command2.CommandText = command.CommandText.Replace("*", "COUNT(*)");
+
+                    command2.Parameters.AddWithValue("@Name", $"%{name}%");
+                    command2.Parameters.AddWithValue("@Sex", $"%{sex}%");
+                    command2.Parameters.AddWithValue("@Game", $"%{game}%");
+                    command2.Parameters.AddWithValue("@Event", $"%{evento}%");
+                    command2.Parameters.AddWithValue("@Sport", $"%{sport}%");
+                    command2.Parameters.AddWithValue("@Medal", $"%{medal}%");
+
+                    totalPage = (int)command2.ExecuteScalar() + 1;
+                    
+
+
+
+                    command.CommandText += " ORDER BY Id";
+                    command.CommandText += " OFFSET @n ROWS";
+                    command.CommandText += " FETCH NEXT @m ROWS ONLY";
+                    
+                    command.Parameters.AddWithValue("@n", (currentPage - 1) * dimensionPage);
+                    command.Parameters.AddWithValue("@m", dimensionPage);
+
+                    
+
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -236,12 +290,12 @@ namespace Olympics.Controllers
             return new Partecipation
             {
                 Id = (long)reader["Id"],
-                IdAthlete = reader.IsDBNull(reader.GetOrdinal("IdAthlete")) ? -1 : (long)reader["IdAthlete"],
+                IdAthlete = reader.IsDBNull(reader.GetOrdinal("IdAthlete")) ? null : (long?)reader["IdAthlete"],
                 Name = reader.IsDBNull(reader.GetOrdinal("Name")) ? null : (string)reader["Name"],
                 Sex = reader.IsDBNull(reader.GetOrdinal("Sex")) ? null : (string)reader["Sex"],
-                Age = reader.IsDBNull(reader.GetOrdinal("Age")) ? -1 : (int)reader["Age"],
-                Height = reader.IsDBNull(reader.GetOrdinal("Height")) ? -1 : (int)reader["Height"],
-                Weight = reader.IsDBNull(reader.GetOrdinal("Weight")) ? -1 : (int)reader["Weight"],
+                Age = reader.IsDBNull(reader.GetOrdinal("Age")) ? null : (int?)reader["Age"],
+                Height = reader.IsDBNull(reader.GetOrdinal("Height")) ? null : (int?)reader["Height"],
+                Weight = reader.IsDBNull(reader.GetOrdinal("Weight")) ? null : (int?)reader["Weight"],
                 NOC = reader.IsDBNull(reader.GetOrdinal("NOC")) ? null : (string)reader["NOC"],
                 Games = reader.IsDBNull(reader.GetOrdinal("Games")) ? null : (string)reader["Games"],
                 Year = reader.IsDBNull(reader.GetOrdinal("Year")) ? -1 : (int)reader["Year"],

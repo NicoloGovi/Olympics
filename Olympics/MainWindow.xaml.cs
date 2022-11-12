@@ -29,6 +29,24 @@ namespace Olympics
             this.DataContext = vm;
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            vm.nextPage();
+        }
 
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            vm.previousPage();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            vm.LastPage();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            vm.FirstPage();
+        }
     }
 }
