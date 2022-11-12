@@ -1,0 +1,24 @@
+﻿<Application x:Class="Olympics.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Olympics"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        
+        <ResourceDictionary>
+
+            <Style x:Key="TitleLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+
+            <Style x:Key="MiniTitleLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="FontWeight" Value="Light"/>
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+            </Style>
+
+        </ResourceDictionary>
+         
+    </Application.Resources>
+</Application>
