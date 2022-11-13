@@ -261,6 +261,22 @@ namespace Olympics.ViewModels
             
             this.DatiPartecipation = Partecipations.getAll(FiltroName, FiltroSex, FiltroGame, FiltroSport, FiltroEvent, FiltroMedal, CurrentPage, DimensionPage,ref paginetotali);
             this.TotalPage = paginetotali / DimensionPage;
+
+            if (CurrentPage == TotalPage)
+            {
+                this.CanGoAhead = false;
+                this.CanGoBack = true;
+            }else if(CurrentPage == 1)
+            {
+                this.CanGoAhead = true;
+                this.CanGoBack = false;
+            }
+            else
+            {
+                this.CanGoAhead = true;
+                this.CanGoBack = true;
+            }
+                
         }
 
         public void SetPagination()
