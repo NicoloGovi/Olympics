@@ -266,10 +266,15 @@ namespace Olympics.ViewModels
             else
                 this.TotalPage = paginetotali / DimensionPage;
 
-            if (CurrentPage == TotalPage)
+            if (CurrentPage == TotalPage && TotalPage != 1)
             {
                 this.CanGoAhead = false;
                 this.CanGoBack = true;
+            }
+            else if(CurrentPage == TotalPage && TotalPage == 1)
+            {
+                CanGoAhead = false;
+                CanGoBack = false;
             }
             else if(CurrentPage == 1)
             {
@@ -330,6 +335,11 @@ namespace Olympics.ViewModels
             this.FiltroEvent = null;
             this.FiltroSport = null;
             this.FiltroMedal = null;
+
+            this.Sports.Clear();
+            this.Events.Clear();
+
+            
 
             LoadDataPartecipations();
         }
