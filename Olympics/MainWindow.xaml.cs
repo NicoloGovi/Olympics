@@ -48,5 +48,15 @@ namespace Olympics
         {
             vm.FirstPage();
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("WPF - Nicolò Govi");
+        }
     }
 }
