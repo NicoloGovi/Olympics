@@ -260,13 +260,18 @@ namespace Olympics.ViewModels
         {
             
             this.DatiPartecipation = Partecipations.getAll(FiltroName, FiltroSex, FiltroGame, FiltroSport, FiltroEvent, FiltroMedal, CurrentPage, DimensionPage,ref paginetotali);
-            this.TotalPage = paginetotali / DimensionPage;
+
+            if (DimensionPage > paginetotali)
+                this.TotalPage = (paginetotali / DimensionPage) + 1;
+            else
+                this.TotalPage = paginetotali / DimensionPage;
 
             if (CurrentPage == TotalPage)
             {
                 this.CanGoAhead = false;
                 this.CanGoBack = true;
-            }else if(CurrentPage == 1)
+            }
+            else if(CurrentPage == 1)
             {
                 this.CanGoAhead = true;
                 this.CanGoBack = false;
@@ -314,6 +319,18 @@ namespace Olympics.ViewModels
         internal void FirstPage()
         {
             CurrentPage = 1;
+            LoadDataPartecipations();
+        }
+
+        internal void AzzeraFiltri()
+        {
+            this.FiltroName = null;
+            this.FiltroSex = null;
+            this.FiltroGame = null;
+            this.FiltroEvent = null;
+            this.FiltroSport = null;
+            this.FiltroMedal = null;
+
             LoadDataPartecipations();
         }
 

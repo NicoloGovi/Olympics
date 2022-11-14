@@ -59,6 +59,7 @@
         <ComboBox Grid.Column="3" Grid.Row="3" Margin="5 0" ItemsSource="{Binding Sports}" SelectedItem="{Binding FiltroSport}"></ComboBox>
         <ComboBox Grid.Column="4" Grid.Row="3" Margin="5 0" ItemsSource="{Binding Events}" SelectedItem="{Binding FiltroEvent}"></ComboBox>
         <ComboBox Grid.Column="5" Grid.Row="3" Margin="5 0" ItemsSource="{Binding Medals}" SelectedItem="{Binding FiltroMedal}"></ComboBox>
+        <Button Grid.Column="7" Grid.Row="3" Margin="5 0" Click="Button_Click_4">Azzera Filtri</Button>
 
         <DataGrid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="7" ItemsSource="{Binding DatiPartecipation}"></DataGrid>
 
