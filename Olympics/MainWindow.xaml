@@ -61,7 +61,7 @@
         <ComboBox Grid.Column="5" Grid.Row="3" Margin="5 0" ItemsSource="{Binding Medals}" SelectedItem="{Binding FiltroMedal}"></ComboBox>
         <Button Grid.Column="7" Grid.Row="3" Margin="5 0" Click="Button_Click_4">Azzera Filtri</Button>
 
-        <DataGrid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="7" ItemsSource="{Binding DatiPartecipation}"></DataGrid>
+        <DataGrid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="7" ItemsSource="{Binding DatiPartecipation}" IsReadOnly="True"></DataGrid>
 
         <Button Grid.Column="1" Grid.Row="6" Margin="15 10" Click="Button_Click_3" IsEnabled="{Binding CanGoBack}">&lt;&lt;</Button>
         <Button Grid.Column="2" Grid.Row="6" Margin="15 10" Click="Button_Click_1" IsEnabled="{Binding CanGoBack}">&lt;</Button>
