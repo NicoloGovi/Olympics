@@ -336,8 +336,8 @@ namespace Olympics.ViewModels
             this.FiltroSport = null;
             this.FiltroMedal = null;
 
-            this.Sports.Clear();
-            this.Events.Clear();
+            this.Sports = null;
+            this.Events = null; ;
 
             
 
